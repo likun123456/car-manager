@@ -13,7 +13,7 @@ import lombok.ToString;
 @Data
 @TableName("user")
 @ToString
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
     private String username;
 

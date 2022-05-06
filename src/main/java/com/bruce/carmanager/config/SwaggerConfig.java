@@ -1,15 +1,20 @@
 package com.bruce.carmanager.config;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: car-manager
@@ -26,21 +31,35 @@ public class SwaggerConfig {
                 .select()
                 //RequestHandlerSelectors配置扫描接口的方式（还有any，none等），
                 //basePackage：指定要扫描的包
-                .apis(RequestHandlerSelectors.basePackage("com.bruce.carmanager.controller"))
-                .paths(PathSelectors.ant("/Hello/hello*"))  //url过滤
-                .build();
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.any())
+                .build().globalOperationParameters(getParameterList());
     }
 
     //配置swagger-ui.html的页面信息
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "jarvis的Swagger-Api文档",
+                "Swagger-Api文档",
                 "感受冥族十万年的怒火吧~~永恒之夜！",
                 "v1.0",
                 "urn:tos",
-                new Contact("jarvis", "https://blog.csdn.net/weixin_43283513", "jarvis314159@gmail.com"),  //作者信息
+                new Contact("bruce", "https://blog.csdn.net/weixin_43283513", "jarvis314159@gmail.com"),  //作者信息
                 "Apache 2.0",
                 "http://www.apache.org/licenses/LICENSE-2.0",
                 new ArrayList<>());
     }
+
+    public List<Parameter> getParameterList() {
+        ParameterBuilder token = new ParameterBuilder();
+        List<Parameter> params = new ArrayList<>();
+        token.name("token")											//这个是请求头的名字，
+                .description("令牌")				 				//在文档中的中文描述
+                .modelRef(new ModelRef("string"))
+                .parameterType("header")						//这个参数的类型
+                .required(false)									 //是否必填
+                .build();
+        params.add(token.build());
+        return params;
+    }
+
 }

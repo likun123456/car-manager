@@ -1,8 +1,7 @@
 package com.bruce.carmanager.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @program: car-manager
@@ -10,9 +9,12 @@ import lombok.ToString;
  * @author: likun
  * @create: 2022-05-05 23: 06
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("user")
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity extends BaseEntity {
 
     private String username;

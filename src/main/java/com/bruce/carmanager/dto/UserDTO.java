@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class UserDTO implements Serializable {
 
     @ApiModelProperty("主键Id")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("用户名")
     private String username;

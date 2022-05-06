@@ -1,7 +1,10 @@
 package com.bruce.carmanager.config;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,19 +17,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MybatisPlusConfig {
 
-    /**
-     * mybatis-plus SQL执行效率插件【生产环境可以关闭】
-     */
     @Bean
-    public PerformanceInterceptor performanceInterceptor() {
-        return new PerformanceInterceptor();
+    public ConfigurationCustomizer configurationCustomizer(){
+        return configuration -> {
+                configuration.setCacheEnabled(true);
+                configuration.setMapUnderscoreToCamelCase(true);
+                configuration.setCallSettersOnNulls(true);
+                configuration.setJdbcTypeForNull(JdbcType.NULL);
+        };
     }
 
     /**
      * 分页插件
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+    public MybatisPlusInterceptor paginationInterceptor() {
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        return mybatisPlusInterceptor;
     }
 }

@@ -1,8 +1,13 @@
-package com.bruce.carmanager.common.utils;
+package com.bruce.carmanager.common.enums;
 
 public enum ResultEnum {
     SUCCESS(200, "操作成功"),
-    FAILED(500, "操作失败");
+    FAILED(500, "操作失败"),
+    BODY_NOT_MATCH(400, "控制针异常"),
+    NO_PERMISSION(501, "权限不足"),
+    NO_LOGIN(502, "用户未登录"),
+    TOKEN_ERROR(503, "token认证失败"),
+    USER_NOT_EXIST(504, "登录用户不存在");
 
     private Integer code;
 
